@@ -1,27 +1,45 @@
-# AnglarBasicalApp
+## codespaceで開けるようにする
+repositoryのsettingにてTemplate repositoryにチェックを付ける
+repositoryのcodeにてUse this templateからOpen in a codespace
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.2.
+## codespaceにangular CLIをinstallする
+下記のコマンドでインストール
 
-## Development server
+```
+$ npm install -g @angular/cli
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## NODEにOPTION追加
 
-## Code scaffolding
+普通にアプリを起動しようとすると下記のエラーが出る
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+'ERR_OSSL_EVP_UNSUPPORTED'
 
-## Build
+対策として下記の環境変数を設定する
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+$ export NODE_OPTIONS=--openssl-legacy-provider
+```
 
-## Running unit tests
+## MySQL環境の構築手順
+イメージの取得
+```
+$ docker image pull mysql:latest
+```
+ボリュームの作成
+```
+$ docker volume create test
+```
+コンテナの作成
+```
+$ docker container run --name test-mysql -v test:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=hogehoge -d mysql:latest
+```
+※「–name」のあとにコンテナ名（「test-mysql」）を指定しています。
+※「-v」で先ほど作成したボリューム（「test」）を、Data Volumeとして指定しています。
+※「-e」でパスワードを指定しています。上記例では「hogehoge」の部分です。
+　パスワードは任意で変更してください。
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## アプリの起動
+```
+$ ng serve --open
+```
