@@ -3,7 +3,7 @@ version: '2.23'
 services:
   main:
     build:
-      context: ../node
+      context: ./node
       dockerfile: Dockerfile
     ports:
       - "4200:4200"
@@ -14,11 +14,12 @@ services:
   db:
     container_name: test-mysql
     build:
-      context: ../mysql
+      context: ./mysql
       dockerfile: Dockerfile
     env_file:
-      - ../mysql/.env
+      - ./mysql/.env
     ports:
       - "3306:3306"
     volumes:
-      - ../data/db:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql/data:/var/lib/mysql
